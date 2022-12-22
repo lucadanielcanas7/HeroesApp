@@ -1,1 +1,39 @@
-<p>search works!</p>
+<div fxLayout="column">
+    <div>
+        <h1>Buscador de Héroes</h1>
+        <mat-divider></mat-divider>
+    </div>
+    <div fxLayout="column">
+        <h3>Buscador</h3>
+
+        <mat-form-field appearance="fill">
+
+            <mat-label>Buscar</mat-label>
+            <input type="text"
+                    placeholder="Ingrese un nombre"
+                    aria-label="Buscar"
+                    matInput
+                    [(ngModel)]="searchTerm"
+                    [matAutocomplete]="auto"
+                    (input)="search()">
+            <mat-autocomplete autoActiveFirstOption 
+                              #auto="matAutocomplete"
+                              (optionSelected)="optionSelected($event)">
+            
+              <mat-option *ngFor="let heroe of heroes" [value]="heroe">
+                {{heroe.superhero}}
+              </mat-option>
+
+              <mat-option value="" *ngIf="heroes.length === 0 && searchTerm.length > 0">
+                No se encontraron heroes con el término de busqueda {{ searchTerm }}
+              </mat-option>
+
+            </mat-autocomplete>
+
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="selectedHeroe" [routerLink]="['/heroes', selectedHeroe.id]">
+        <img [src]="selectedHeroe | image" alt="heroe" style="cursor: pointer;">
+    </div>
+</div>
